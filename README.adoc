@@ -1,0 +1,4 @@
+= The hive
+
+A way to visualize all the bees of CloudBees.
+
