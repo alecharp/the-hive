@@ -17,7 +17,9 @@ public class BeeRepository {
 
     public void addBee(Bee bee) {
         synchronized (monitor) {
-            hive.add(bee);
+            if(!hive.contains(bee)) {
+                hive.add(bee);
+            }
         }
     }
 
