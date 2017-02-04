@@ -2,3 +2,10 @@
 
 A way to visualize all the bees of CloudBees.
 
+== Build
+
+ - requires: Maven 3.3.9, JDK 8
+
+```
+mvn clean verify
+```

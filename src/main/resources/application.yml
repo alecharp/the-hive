@@ -1,0 +1,11 @@
+server:
+  compression:
+    enabled: true
+    mime-types: application/javascript, application/json, text/css, text/html, image/png
+    min-response-size: 5125
+  use-forward-headers: true
+
+---
+
+spring.profiles: dev
+server.port: 8181
