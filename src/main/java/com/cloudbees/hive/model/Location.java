@@ -6,7 +6,10 @@ import java.util.Objects;
  * @author Adrien Lecharpentier
  */
 public class Location {
-    private final double longitude, latitude;
+    private double longitude, latitude;
+
+    private Location() {
+    }
 
     public Location(double latitude, double longitude) {
         this.longitude = longitude;

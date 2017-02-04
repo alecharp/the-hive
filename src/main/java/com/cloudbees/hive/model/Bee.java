@@ -6,8 +6,11 @@ import java.util.Objects;
  * @author Adrien Lecharpentier
  */
 public class Bee {
-    private final String name;
-    private final Location location;
+    private String name;
+    private Location location;
+
+    private Bee() {
+    }
 
     public Bee(String name, Location location) {
         this.name = name;
