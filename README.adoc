@@ -9,3 +9,13 @@ A way to visualize all the bees of CloudBees.
 ```
 mvn clean verify
 ```
+
+== Run
+
+Either
+
+```
+mvn spring-boot:run
+```
+
+or from your IDE, run the class `com.cloudbees.hive.Hive`
