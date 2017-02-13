@@ -20,7 +20,7 @@ public class BeeAPI {
         this.beeService = beeService;
     }
 
-    @GetMapping(value = "/api/bees")
+    @GetMapping(value = "/api/hive")
     public List<Bee> getHive() {
         return this.beeService.getAll();
     }

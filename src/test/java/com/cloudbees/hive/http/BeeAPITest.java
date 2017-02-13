@@ -46,7 +46,7 @@ public class BeeAPITest {
         given(this.beeService.getAll())
             .willReturn(hive);
 
-        this.mvc.perform(get("/api/bees"))
+        this.mvc.perform(get("/api/hive"))
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[*].name", Matchers.contains("Adrien L.", "Arnaud H.")))
