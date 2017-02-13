@@ -19,8 +19,8 @@ public class BeeService {
         this.beeRepository = beeRepository;
     }
 
-    public void addBee(Bee bee) {
-        this.beeRepository.addBee(bee);
+    public Bee addBee(Bee bee) {
+        return this.beeRepository.addBee(bee);
     }
 
     public List<Bee> getAll() {

@@ -15,11 +15,12 @@ public class BeeRepository {
     private final ArrayList<Bee> hive = new ArrayList<>();
     private static final Object monitor = new Object();
 
-    public void addBee(Bee bee) {
+    public Bee addBee(Bee bee) {
         synchronized (monitor) {
             if(!hive.contains(bee)) {
                 hive.add(bee);
             }
+            return bee;
         }
     }
 
