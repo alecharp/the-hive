@@ -3,9 +3,14 @@ package com.cloudbees.hive.http;
 import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.service.BeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -26,8 +31,8 @@ public class BeeAPI {
     }
 
     @PostMapping(value = "/api/bee")
-    @ResponseStatus(value = HttpStatus.CREATED)
-    public void newBee(@RequestBody Bee bee) {
-        this.beeService.addBee(bee);
+    public ResponseEntity<Bee> createBee(@RequestBody Bee bee) throws URISyntaxException {
+        Bee added = this.beeService.addBee(bee);
+        return ResponseEntity.created(new URI("/api/bee/" + added.getId())).body(added);
     }
 }

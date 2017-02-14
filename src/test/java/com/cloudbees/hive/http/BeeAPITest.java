@@ -54,14 +54,14 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
         Bee maya = new Bee("John D.", new Location(0, 0));
-        given(this.beeService.addBee(any(Bee.class))).willReturn(maya);
+        given(this.beeService.addBee(maya)).willReturn(maya);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
         this.mvc.perform(post("/api/bee")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsBytes(maya)))
-            .andExpect(status().isCreated());
-        // TODO test that the header "Location" is set when storing bees into DB
+            .andExpect(status().isCreated())
+            .andExpect(header().string("Location", Matchers.endsWith(maya.getId())));
     }
 }
