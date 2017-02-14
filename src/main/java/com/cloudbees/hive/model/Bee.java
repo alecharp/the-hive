@@ -1,20 +1,29 @@
 package com.cloudbees.hive.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * @author Adrien Lecharpentier
  */
 public class Bee {
+    private String id;
+
     private String name;
     private Location location;
 
     private Bee() {
+        this.id = UUID.randomUUID().toString();
     }
 
     public Bee(String name, Location location) {
+        this();
         this.name = name;
         this.location = location;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getName() {

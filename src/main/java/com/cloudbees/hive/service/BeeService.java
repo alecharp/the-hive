@@ -5,7 +5,8 @@ import com.cloudbees.hive.repository.BeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Adrien Lecharpentier
@@ -23,7 +24,7 @@ public class BeeService {
         return this.beeRepository.addBee(bee);
     }
 
-    public List<Bee> getAll() {
-        return this.beeRepository.getHive();
+    public Collection<Bee> getAll() {
+        return Collections.unmodifiableCollection(this.beeRepository.getHive());
     }
 }

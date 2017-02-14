@@ -3,30 +3,22 @@ package com.cloudbees.hive.repository;
 import com.cloudbees.hive.model.Bee;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Adrien Lecharpentier
  */
 @Repository
 public class BeeRepository {
-    private final ArrayList<Bee> hive = new ArrayList<>();
-    private static final Object monitor = new Object();
+    private final ConcurrentHashMap<String, Bee> hive = new ConcurrentHashMap<>();
 
     public Bee addBee(Bee bee) {
-        synchronized (monitor) {
-            if(!hive.contains(bee)) {
-                hive.add(bee);
-            }
-            return bee;
-        }
+        hive.putIfAbsent(bee.getId(), bee);
+        return bee;
     }
 
-    public List<Bee> getHive() {
-        synchronized (monitor) {
-            return Collections.unmodifiableList(hive);
-        }
+    public Collection<Bee> getHive() {
+        return hive.values();
     }
 }

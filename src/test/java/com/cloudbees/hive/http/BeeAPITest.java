@@ -3,7 +3,6 @@ package com.cloudbees.hive.http;
 import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.model.Location;
 import com.cloudbees.hive.service.BeeService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -19,12 +18,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author Adrien Lecharpentier
@@ -49,7 +45,9 @@ public class BeeAPITest {
         this.mvc.perform(get("/api/hive"))
             .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[*].name", Matchers.contains("Adrien L.", "Arnaud H.")))
+            .andExpect(jsonPath("$", Matchers.hasSize(hive.size())))
+            .andExpect(jsonPath("$[*].id", Matchers.hasItem(Matchers.any(String.class))))
+            .andExpect(jsonPath("$[*].name", Matchers.hasItems("Adrien L.", "Arnaud H.")))
             .andReturn();
     }
 

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author Adrien Lecharpentier
@@ -21,7 +21,7 @@ public class BeeAPI {
     }
 
     @GetMapping(value = "/api/hive")
-    public List<Bee> getHive() {
+    public Collection<Bee> getHive() {
         return this.beeService.getAll();
     }
 
