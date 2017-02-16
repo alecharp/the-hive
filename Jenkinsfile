@@ -15,20 +15,21 @@ pipeline {
       }
       post {
         success {
-          archiveArtifacts artifacts: 'target/the-hive.jar', fingerprint: true, onlyIfSuccessful: true
+          archiveArtifacts artifacts: 'target/the-hive.jar', fingerprint: true
         }
       }
     }
     stage('Test') {
       steps {
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
-          sh 'mvn clean verify -s settings.xml'
+          sh 'mvn clean verify -s settings.xml -P coverage -Dfindbugs.failOnError=false'
         }
       }
       post {
-        success {
+        always {
           junit allowEmptyResults: true, testResults: 'target/*-reports/*.xml'
-          step([$class: 'JacocoPublisher', classPattern: 'target/classes', execPattern: 'target/**.exec', sourcePattern: 'src/main/java'])
+          step([$class: 'JacocoPublisher', classPattern: 'target/classes', execPattern: 'target/jacoco.exec', sourcePattern: 'src/main/java'])
+          step([$class: 'FindBugsPublisher', pattern: 'target/findbugsXml.xml', unstableTotalHigh: '1', unstableTotalNormal: '1'])
         }
       }
     }
