@@ -14,7 +14,7 @@ public class BeeRepository {
     private final ConcurrentHashMap<String, Bee> hive = new ConcurrentHashMap<>();
 
     public Bee addBee(Bee bee) {
-        hive.putIfAbsent(bee.getId(), bee);
+        hive.put(bee.getId(), bee);
         return bee;
     }
 
