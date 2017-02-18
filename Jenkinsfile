@@ -13,11 +13,6 @@ pipeline {
           sh 'mvn clean package -Dmaven.test.skip=true -s settings.xml'
         }
       }
-      post {
-        success {
-          archiveArtifacts artifacts: 'target/the-hive.jar', fingerprint: true
-        }
-      }
     }
     stage('Test') {
       steps {
@@ -32,6 +27,12 @@ pipeline {
           step([$class: 'FindBugsPublisher', pattern: 'target/findbugsXml.xml'])
         }
       }
+    }
+  }
+
+  post {
+    success {
+      archiveArtifacts artifacts: 'target/the-hive.jar', fingerprint: true
     }
   }
 }
