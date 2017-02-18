@@ -29,7 +29,7 @@ pipeline {
         always {
           junit allowEmptyResults: true, testResults: 'target/*-reports/*.xml'
           step([$class: 'JacocoPublisher', classPattern: 'target/classes', execPattern: 'target/jacoco.exec', sourcePattern: 'src/main/java'])
-          step([$class: 'FindBugsPublisher', pattern: 'target/findbugsXml.xml', unstableTotalHigh: '1', unstableTotalNormal: '1'])
+          step([$class: 'FindBugsPublisher', pattern: 'target/findbugsXml.xml'])
         }
       }
     }
