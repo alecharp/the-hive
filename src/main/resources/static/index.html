@@ -3,48 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <title>The Hive</title>
-
-  <link rel="stylesheet" href="webjars/leaflet/leaflet.css"/>
-  <script type="application/javascript" src="webjars/leaflet/leaflet.js"></script>
-  <script type="application/javascript" src="webjars/jquery/jquery.min.js"></script>
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    div#content {
-      width: 100vw;
-      height: 100vh;
-    }
-  </style>
 </head>
 <body>
-<div id="content"></div>
 
-<script type="application/javascript">
-  (function() {
-    var hive = L.map('content').setView([48.85, 2.35], 3);
+<h1>This is CloudBees Inc. Hive</h1>
 
-    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      continuousWorld: true
-    }).addTo(hive);
-
-    $.ajax({
-      method: 'GET',
-      url: '/api/hive',
-      success: handleSuccess
-    });
-
-    function handleSuccess (data) {
-      data.forEach(function(bee) {
-        var beeMarker = L.marker([bee.location.latitude, bee.location.longitude]).addTo(hive);
-        beeMarker.bindPopup("<b>" + bee.name + "</b>");
-      })
-    }
-  })();
-</script>
 </body>
 </html>
