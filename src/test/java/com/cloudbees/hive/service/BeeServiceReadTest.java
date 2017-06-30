@@ -33,6 +33,6 @@ public class BeeServiceReadTest {
         );
 
         given(this.beeRepository.findAll()).willReturn(expectedHive);
-        assertThat(this.beeService.getAll()).containsExactlyElementsOf(expectedHive);
+        assertThat(this.beeService.all()).containsExactlyElementsOf(expectedHive);
     }
 }

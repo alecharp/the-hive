@@ -25,7 +25,7 @@ public class BeeServiceWriteTest {
     public void shouldBeAbleToStoreAValue() {
         Bee bee = new Bee("Adrien L.", "Paris, France");
 
-        this.beeService.addBee(bee);
+        this.beeService.add(bee);
         verify(this.beeRepository).save(bee);
     }
 }

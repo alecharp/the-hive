@@ -5,8 +5,6 @@ import com.cloudbees.hive.repository.BeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 /**
@@ -14,18 +12,22 @@ import java.util.Optional;
  */
 @Service
 public class BeeService {
-    private final BeeRepository beeRepository;
+    private final BeeRepository repository;
 
     @Autowired
-    public BeeService(BeeRepository beeRepository) {
-        this.beeRepository = beeRepository;
+    public BeeService(BeeRepository repository) {
+        this.repository = repository;
     }
 
-    public Bee addBee(Bee bee) {
-        return this.beeRepository.save(bee);
+    public Bee add(Bee bee) {
+        return this.repository.save(bee);
     }
 
-    public Iterable<Bee> getAll() {
-        return this.beeRepository.findAll();
+    public Iterable<Bee> all() {
+        return this.repository.findAll();
+    }
+
+    public Optional<Bee> byId(String id) {
+        return this.repository.findById(id);
     }
 }

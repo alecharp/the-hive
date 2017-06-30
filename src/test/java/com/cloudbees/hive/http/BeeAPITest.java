@@ -38,7 +38,7 @@ public class BeeAPITest {
             new Bee("Arnaud H.", "Paris, France")
         );
 
-        given(this.beeService.getAll())
+        given(this.beeService.all())
             .willReturn(hive);
 
         this.mvc.perform(get("/api/hive"))
@@ -53,7 +53,7 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
         Bee maya = new Bee("John D.", "New York City, US");
-        given(this.beeService.addBee(maya)).willReturn(maya);
+        given(this.beeService.add(maya)).willReturn(maya);
 
         ObjectMapper objectMapper = new ObjectMapper();
 
