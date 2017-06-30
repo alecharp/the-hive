@@ -1,7 +1,6 @@
 package com.cloudbees.hive.http;
 
 import com.cloudbees.hive.model.Bee;
-import com.cloudbees.hive.model.Location;
 import com.cloudbees.hive.service.BeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -35,8 +34,8 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToGetTheHiveMember() throws Exception {
         List<Bee> hive = Arrays.asList(
-            new Bee("Adrien L.", new Location(0, 0)),
-            new Bee("Arnaud H.", new Location(45, 45))
+            new Bee("Adrien L.", "Paris, France"),
+            new Bee("Arnaud H.", "Paris, France")
         );
 
         given(this.beeService.getAll())
@@ -53,7 +52,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
-        Bee maya = new Bee("John D.", new Location(0, 0));
+        Bee maya = new Bee("John D.", "New York City, US");
         given(this.beeService.addBee(maya)).willReturn(maya);
 
         ObjectMapper objectMapper = new ObjectMapper();

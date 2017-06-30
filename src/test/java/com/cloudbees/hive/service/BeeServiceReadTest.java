@@ -1,7 +1,6 @@
 package com.cloudbees.hive.service;
 
 import com.cloudbees.hive.model.Bee;
-import com.cloudbees.hive.model.Location;
 import com.cloudbees.hive.repository.BeeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,11 +28,11 @@ public class BeeServiceReadTest {
     @Test
     public void shouldBeAbleToGetTheHive() {
         List<Bee> expectedHive = Arrays.asList(
-            new Bee("Adrien L.", new Location(45, 90)),
-            new Bee("Arnaud H.", new Location(-45, -90))
+            new Bee("Adrien L.", "Paris, France"),
+            new Bee("Arnaud H.", "Paris, France")
         );
 
-        given(this.beeRepository.getHive()).willReturn(expectedHive);
+        given(this.beeRepository.findAll()).willReturn(expectedHive);
         assertThat(this.beeService.getAll()).containsExactlyElementsOf(expectedHive);
     }
 }

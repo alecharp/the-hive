@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Optional;
 
 /**
  * @author Adrien Lecharpentier
@@ -21,10 +22,10 @@ public class BeeService {
     }
 
     public Bee addBee(Bee bee) {
-        return this.beeRepository.addBee(bee);
+        return this.beeRepository.save(bee);
     }
 
-    public Collection<Bee> getAll() {
-        return Collections.unmodifiableCollection(this.beeRepository.getHive());
+    public Iterable<Bee> getAll() {
+        return this.beeRepository.findAll();
     }
 }

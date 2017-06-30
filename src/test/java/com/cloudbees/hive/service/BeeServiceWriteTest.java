@@ -1,7 +1,6 @@
 package com.cloudbees.hive.service;
 
 import com.cloudbees.hive.model.Bee;
-import com.cloudbees.hive.model.Location;
 import com.cloudbees.hive.repository.BeeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,9 +23,9 @@ public class BeeServiceWriteTest {
 
     @Test
     public void shouldBeAbleToStoreAValue() {
-        Bee bee = new Bee("Adrien L.", new Location(0, 0));
+        Bee bee = new Bee("Adrien L.", "Paris, France");
 
         this.beeService.addBee(bee);
-        verify(this.beeRepository).addBee(bee);
+        verify(this.beeRepository).save(bee);
     }
 }

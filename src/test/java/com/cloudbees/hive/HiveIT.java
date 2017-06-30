@@ -1,7 +1,6 @@
 package com.cloudbees.hive;
 
 import com.cloudbees.hive.model.Bee;
-import com.cloudbees.hive.model.Location;
 import com.cloudbees.hive.repository.BeeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,10 +37,10 @@ public class HiveIT {
             .javascriptEnabled(true)
             .build();
 
-        when(beeRepository.getHive()).thenReturn(
+        when(beeRepository.findAll()).thenReturn(
             Arrays.asList(
-                new Bee("John D.", new Location(40.741895, -73.989308)),
-                new Bee("M. X", new Location(48.856614, 2.352222))
+                new Bee("John D.", "New York City, US"),
+                new Bee("M. X", "Paris, France")
             )
         );
     }

@@ -5,7 +5,25 @@ server:
     min-response-size: 5125
   use-forward-headers: true
 
+spring:
+  jpa.hibernate.ddl-auto: update
+  datasource.driver-class-name: org.postgresql.Driver
+
 ---
 
 spring.profiles: dev
 server.port: 8181
+spring:
+  jpa.hibernate.ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://localhost/the-hive
+    username: the-hive
+    password: my-local-database-password
+
+---
+
+spring.profiles: prod
+spring.datasource:
+  url: ${DATABASE_URL}
+  username: ${DATABASE_USER}
+  password: ${DATABASE_PASSWORD}
