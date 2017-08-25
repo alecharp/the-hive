@@ -4,8 +4,10 @@ import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.repository.BeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * @author Adrien Lecharpentier
@@ -19,15 +21,18 @@ public class BeeService {
         this.repository = repository;
     }
 
+    @Transactional
     public Bee add(Bee bee) {
         return this.repository.save(bee);
     }
 
+    @Transactional(readOnly = true)
     public Iterable<Bee> all() {
         return this.repository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Bee> byId(String id) {
-        return this.repository.findById(id);
+        return Optional.of(this.repository.findOne(id));
     }
 }

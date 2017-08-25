@@ -14,7 +14,7 @@ spring:
 spring.profiles: dev
 server.port: 8181
 spring:
-  jpa.hibernate.ddl-auto: create-drop
+  jpa.hibernate.ddl-auto: update
   datasource:
     url: jdbc:postgresql://localhost/the-hive
     username: the-hive
