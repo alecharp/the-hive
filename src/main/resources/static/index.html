@@ -3,10 +3,41 @@
 <head>
   <meta charset="UTF-8"/>
   <title>The Hive</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+        integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+        crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+          integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+          crossorigin=""></script>
+
+  <style rel="stylesheet" media="screen">
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    div#content {
+      height: 100vh;
+      width: 100vw;
+    }
+  </style>
 </head>
 <body>
 
-<h1>This is CloudBees Inc. Hive</h1>
+<div id="content">
+</div>
+
+<script type="application/javascript">
+  (function() {
+    const hive = L.map('content').setView([48.85, 2.35], 3);
+    L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 7,
+      minZoom: 3,
+      attribution: '&copy;&nspar;<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      continuousWorld: true
+    }).addTo(hive);
+  })();
+</script>
 
 </body>
 </html>
