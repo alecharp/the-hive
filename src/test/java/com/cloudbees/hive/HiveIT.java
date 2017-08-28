@@ -39,8 +39,8 @@ public class HiveIT {
 
         when(beeRepository.findAll()).thenReturn(
             Arrays.asList(
-                new Bee("John D.", "New York City, US"),
-                new Bee("M. X", "Paris, France")
+                new Bee("John D.", "j@f.us", "New York City, US"),
+                new Bee("M. X", "m@x.fr", "Paris, France")
             )
         );
     }

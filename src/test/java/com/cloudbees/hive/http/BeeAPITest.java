@@ -34,8 +34,8 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToGetTheHiveMember() throws Exception {
         List<Bee> hive = Arrays.asList(
-            new Bee("Adrien L.", "Paris, France"),
-            new Bee("Arnaud H.", "Paris, France")
+            new Bee("Adrien L.", "a@l.fr", "Paris, France"),
+            new Bee("Arnaud H.", "a@h.fr", "Paris, France")
         );
 
         given(this.beeService.all())
@@ -52,7 +52,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
-        Bee maya = new Bee("John D.", "New York City, US");
+        Bee maya = new Bee("John D.", "j@d.fr", "New York City, US");
         given(this.beeService.add(maya)).willReturn(maya);
 
         ObjectMapper objectMapper = new ObjectMapper();

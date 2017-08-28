@@ -28,8 +28,8 @@ public class BeeServiceReadTest {
     @Test
     public void shouldBeAbleToGetTheHive() {
         List<Bee> expectedHive = Arrays.asList(
-            new Bee("Adrien L.", "Paris, France"),
-            new Bee("Arnaud H.", "Paris, France")
+            new Bee("Adrien L.", "a@l.fr", "Paris, France"),
+            new Bee("Arnaud H.", "a@h.fr", "Paris, France")
         );
 
         given(this.beeRepository.findAll()).willReturn(expectedHive);
