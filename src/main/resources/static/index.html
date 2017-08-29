@@ -81,8 +81,43 @@
       continuousWorld: true
     }).addTo(hive);
 
+    $('.ui.modal').modal({
+      onApprove: function () {
+        return false;
+      },
+      onDeny: function () {
+        const $form = $('.ui.form');
+        $form.form('clear');
+        $form.find('.error').removeClass('error');
+        $form.find('.success').removeClass('success');
+      }
+    });
+
     $('.ui.form').form({
       inline: true,
+      onSuccess: function (e, fields) {
+        if (e !== undefined) e.preventDefault();
+        $('.ui.form').addClass('loading');
+
+        $.ajax({
+          type: 'POST',
+          url: '/api/bee',
+          data: JSON.stringify(fields),
+          contentType: 'application/json'
+        })
+          .done(function () {
+            $('.ui.form').form('clear');
+            $('.ui.modal').modal('hide')
+          })
+          .fail(function (jqXHR) {
+            $('.ui.form').form('set error');
+            const _error = jqXHR.responseJSON;
+            $('.ui.form .ui.message').text(_error.message);
+          })
+          .always(function () {
+            $('.ui.form').removeClass('loading')
+          });
+      },
       fields: {
         name: {
           rules: [{
