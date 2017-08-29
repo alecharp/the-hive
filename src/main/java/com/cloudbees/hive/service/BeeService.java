@@ -3,9 +3,11 @@ package com.cloudbees.hive.service;
 import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.repository.BeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -33,5 +35,9 @@ public class BeeService {
     @Transactional(readOnly = true)
     public Optional<Bee> byId(String id) {
         return Optional.of(this.repository.findOne(id));
+    }
+
+    public List<GrantedAuthority> authenticate(String email, String name) {
+        return null;
     }
 }

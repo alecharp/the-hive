@@ -9,12 +9,24 @@ spring:
   jpa.hibernate.ddl-auto: update
   datasource.driver-class-name: org.postgresql.Driver
 
+security.oauth2:
+  sso.login-path: /api/me/login
+  client:
+    client-id:
+    client-secret: 
+    access-token-uri: https://www.googleapis.com/oauth2/v3/token
+    user-authorization-uri: https://accounts.google.com/o/oauth2/auth
+    authentication-scheme: query
+    scope: email profile
+    authorities: USER
+  resource:
+    user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
+
 ---
 
 spring.profiles: dev
 server.port: 8181
 spring:
-  jpa.hibernate.ddl-auto: update
   datasource:
     url: jdbc:postgresql://localhost/the-hive
     username: the-hive
