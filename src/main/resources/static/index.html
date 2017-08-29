@@ -26,11 +26,49 @@
       height: 100vh;
       width: 100vw;
     }
+
+    button#create-bee {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 900;
+    }
   </style>
 </head>
 <body>
 
 <div id="content">
+  <button id="create-bee" class="ui button huge icon red circular" onclick="$('.modal').modal('show')">
+    <i class="add circle icon"></i>
+  </button>
+</div>
+
+<div class="ui modal tiny">
+  <div class="header">Create new entry</div>
+  <div class="content">
+    <form class="ui form" action="#">
+      <div class="field required">
+        <label>Name</label>
+        <input placeholder="Name" name="name">
+      </div>
+      <div class="field required">
+        <label>Email</label>
+        <input type="email" placeholder="Email" name="email">
+      </div>
+      <div class="field required">
+        <label>Location</label>
+        <input placeholder="Location" name="location">
+      </div>
+      <div class="ui message error"></div>
+    </form>
+  </div>
+  <div class="actions">
+    <div class="ui buttons">
+      <button class="ui button red cancel">Cancel</button>
+      <div class="or"></div>
+      <button class="ui positive button" onclick="$('.ui.form').form('validate form')">Save</button>
+    </div>
+  </div>
 </div>
 
 <script type="application/javascript">
@@ -42,6 +80,33 @@
       attribution: '&copy;&nspar;<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       continuousWorld: true
     }).addTo(hive);
+
+    $('.ui.form').form({
+      inline: true,
+      fields: {
+        name: {
+          rules: [{
+            type: 'empty',
+            prompt: 'You must specify your name'
+          }]
+        },
+        email: {
+          rules: [{
+            type: 'empty',
+            prompt: 'You must specify your email'
+          }, {
+            type: 'email',
+            prompt: 'Specified email is not valid'
+          }]
+        },
+        location: {
+          rules: [{
+            type: 'empty',
+            prompt: 'You must specify your location'
+          }]
+        }
+      }
+    })
   })();
 </script>
 
