@@ -21,12 +21,16 @@ public class Bee {
     private String name;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column
     private double latitude;
-    @Column(nullable = false)
+    @Column
     private double longitude;
 
     private Bee() {
+    }
+
+    public Bee(String name, String email) {
+        this(name, email, 0, 0);
     }
 
     public Bee(String name, String email, double latitude, double longitude) {
