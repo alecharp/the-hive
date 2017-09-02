@@ -28,8 +28,8 @@ public class BeeServiceIT {
     @Test
     public void shouldBeAbleToSaveBeesInsideTheHive() {
         List<Bee> expectedHive = Arrays.asList(
-            new Bee("Adrien L.", "a@l.fr", "Paris, France"),
-            new Bee("Arnaud H.", "a@h.fr", "Paris, France")
+            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014),
+            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072)
         );
         expectedHive.forEach(beeService::add);
         assertThat(this.beeService.all()).containsExactlyElementsOf(expectedHive);
