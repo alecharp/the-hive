@@ -20,14 +20,17 @@ public class Bee {
 
     @Column(nullable = false)
     private String name;
+    @Column(nullable = false, unique = true)
+    private String email;
     @Column(nullable = false)
     private String location;
 
     private Bee() {
     }
 
-    public Bee(String name, String location) {
+    public Bee(String name, String email, String location) {
         this.name = name;
+        this.email = email;
         this.location = location;
     }
 
@@ -37,6 +40,10 @@ public class Bee {
 
     public String getName() {
         return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getLocation() {

@@ -43,8 +43,8 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToGetTheHiveMembers() throws Exception {
         List<Bee> hive = Arrays.asList(
-            new Bee("Adrien L.", "Paris, France"),
-            new Bee("Arnaud H.", "Paris, France")
+            new Bee("Adrien L.", "a@l.fr", "Paris, France"),
+            new Bee("Arnaud H.", "a@h.fr", "Paris, France")
         );
         given(this.beeService.all()).willReturn(hive);
 
@@ -64,7 +64,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToRetrieveOneBee() throws Exception {
-        Bee maya = new Bee("John D.", "New York City, US");
+        Bee maya = new Bee("John D.", "j@d.us", "New York City, US");
         given(this.beeService.byId(anyString())).willReturn(Optional.of(maya));
 
         this.mvc.perform(get("/api/bee/foobar"))
@@ -83,7 +83,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
-        Bee maya = new Bee("John D.", "New York City, US");
+        Bee maya = new Bee("John D.", "j@d.fr", "New York City, US");
         given(this.beeService.add(maya)).willReturn(maya);
 
         Field id = maya.getClass().getDeclaredField("id");
