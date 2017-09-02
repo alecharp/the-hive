@@ -99,6 +99,11 @@
       }
     });
 
+    $.fn.form.settings.rules.boundaries = function (value, boundaries) {
+      const [minValue, maxValue] = boundaries.split(':');
+      return Number(value) >= Number(minValue) && Number(value) <= Number(maxValue);
+    };
+
     $('.ui.form').form({
       inline: true,
       onSuccess: function (e, fields) {
@@ -138,14 +143,32 @@
             prompt: 'Specified email is not valid'
           }]
         },
-        location: {
+        latitude: {
           rules: [{
             type: 'empty',
-            prompt: 'You must specify your location'
+            prompt: 'You must specify the latitude of your location'
+          }, {
+            type: 'number',
+            prompt: 'The latitude must be a decimal number'
+          }, {
+            type: 'boundaries[-90:90]',
+            prompt: 'The latitude must be higher than -90 and less than 90'
+          }]
+        },
+        longitude: {
+          rules: [{
+            type: 'empty',
+            prompt: 'You must specify the longitude of your location'
+          }, {
+            type: 'number',
+            prompt: 'The longitude must be a decimal number'
+          }, {
+            type: 'boundaries[-180:180]',
+            prompt: 'The latitude must be higher than -180 and less than 180'
           }]
         }
       }
-    })
+    });
   })();
 </script>
 
