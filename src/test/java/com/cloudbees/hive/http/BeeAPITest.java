@@ -59,8 +59,8 @@ public class BeeAPITest {
             .andExpect(jsonPath("$", Matchers.hasSize(hive.size())))
             .andExpect(jsonPath("$[*].id", Matchers.hasItem(Matchers.any(String.class))))
             .andExpect(jsonPath("$[*].name", Matchers.hasItems("Adrien L.", "Carlos R.")))
-            .andExpect(jsonPath("$[*].lat", Matchers.hasItems(48.864716, 37.392529)))
-            .andExpect(jsonPath("$[*].lon", Matchers.hasItems(2.349014, -5.994072)))
+            .andExpect(jsonPath("$[*].latitude", Matchers.hasItems(48.864716, 37.392529)))
+            .andExpect(jsonPath("$[*].longitude", Matchers.hasItems(2.349014, -5.994072)))
             .andReturn();
     }
 

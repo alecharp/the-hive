@@ -22,18 +22,18 @@ public class Bee {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    private double lat;
+    private double latitude;
     @Column(nullable = false)
-    private double lon;
+    private double longitude;
 
     private Bee() {
     }
 
-    public Bee(String name, String email, Double lat, Double lon) {
+    public Bee(String name, String email, double latitude, double longitude) {
         this.name = name;
         this.email = email;
-        this.lat = lat;
-        this.lon = lon;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getId() {
@@ -48,12 +48,12 @@ public class Bee {
         return email;
     }
 
-    public double getLat() {
-        return lat;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public double getLon() {
-        return lon;
+    public double getLongitude() {
+        return longitude;
     }
 
 
