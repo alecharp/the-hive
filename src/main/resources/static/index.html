@@ -60,11 +60,16 @@
       </div>
       <div class="field required">
         <label>Location</label>
-        <div class="two fields">
-          <div class="field">
+        <div class="three fields">
+          <div class="field two wide">
+            <button class="ui icon button" id="location">
+              <i class="icon location arrow"></i>
+            </button>
+          </div>
+          <div class="field seven wide">
             <input type="number" name="latitude" placeholder="Latitude">
           </div>
-          <div class="field">
+          <div class="field seven wide">
             <input type="number" name="longitude" placeholder="Longitude">
           </div>
         </div>
@@ -168,6 +173,26 @@
           }]
         }
       }
+    });
+
+    const locationButton = $('.ui.button#location');
+    if(!("geolocation" in navigator)) {
+      locationButton.toggleClass('disabled');
+    }
+
+    locationButton.click(function(event) {
+      event.preventDefault();
+      locationButton.toggleClass('loading');
+      navigator.geolocation.getCurrentPosition(function(position) {
+        $('.ui.form').form('set values', {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        });
+        locationButton.toggleClass('loading');
+      }, function () {
+        locationButton.toggleClass('loading');
+        locationButton.toggleClass('disabled');
+      })
     });
   })();
 </script>
