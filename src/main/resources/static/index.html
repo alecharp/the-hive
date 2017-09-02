@@ -4,18 +4,21 @@
   <meta charset="UTF-8"/>
   <title>The Hive</title>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+  <link rel="stylesheet" type="text/css"
+        href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
         integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
         crossorigin=""/>
   <link rel="stylesheet" type="text/css"
-        href="https://unpkg.com/semantic-ui@2.2/dist/semantic.min.css">
+        href="https://unpkg.com/semantic-ui@2.2.12/dist/semantic.min.css"
+        crossorigin=""/>
 
   <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
           integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
           crossorigin=""></script>
-  <script src="https://unpkg.com/jquery@3.1.1"
+  <script src="https://unpkg.com/jquery@3.2.1/dist/jquery.min.js"
           crossorigin=""></script>
-  <script src="https://unpkg.com/semantic-ui@2.2/dist/semantic.min.js"></script>
+  <script src="https://unpkg.com/semantic-ui@2.2.12/dist/semantic.min.js"
+          crossorigin=""></script>
 
   <style rel="stylesheet" media="screen">
     body {
@@ -59,7 +62,6 @@
         <label>Location</label>
         <input placeholder="Location" name="location">
       </div>
-      <div class="ui message error"></div>
     </form>
   </div>
   <div class="actions">
@@ -86,10 +88,7 @@
         return false;
       },
       onDeny: function () {
-        const $form = $('.ui.form');
-        $form.form('clear');
-        $form.find('.error').removeClass('error');
-        $form.find('.success').removeClass('success');
+        $('.ui.form').form('reset');
       }
     });
 
@@ -106,13 +105,11 @@
           contentType: 'application/json'
         })
           .done(function () {
-            $('.ui.form').form('clear');
+            $('.ui.form').form('reset');
             $('.ui.modal').modal('hide')
           })
-          .fail(function (jqXHR) {
+          .fail(function () {
             $('.ui.form').form('set error');
-            const _error = jqXHR.responseJSON;
-            $('.ui.form .ui.message').text(_error.message);
           })
           .always(function () {
             $('.ui.form').removeClass('loading')
