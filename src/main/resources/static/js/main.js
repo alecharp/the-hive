@@ -7,6 +7,14 @@
     continuousWorld: true
   }).addTo(hive);
 
+  $.get('/api/hive', function(bees) {
+    bees.forEach(function(bee) {
+      L.marker([bee.latitude, bee.longitude])
+        .bindPopup(`<b>${bee.name}</b>`)
+        .addTo(hive);
+    });
+  });
+
   const modal = $('.ui.modal');
   modal.modal({
     onApprove: function () {
