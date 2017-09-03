@@ -7,12 +7,13 @@
     continuousWorld: true
   }).addTo(hive);
 
+  const addBeeToMap = function (bee) {
+    L.marker([bee.latitude, bee.longitude])
+      .bindPopup(`<b>${bee.name}</b>`)
+      .addTo(hive);
+  };
   $.get('/api/hive', function(bees) {
-    bees.forEach(function(bee) {
-      L.marker([bee.latitude, bee.longitude])
-        .bindPopup(`<b>${bee.name}</b>`)
-        .addTo(hive);
-    });
+    bees.forEach(addBeeToMap);
   });
 
   const modal = $('.ui.modal');
@@ -52,15 +53,17 @@
         data: JSON.stringify(fields),
         contentType: 'application/json'
       })
-        .done(function () {
-          $('.ui.form').form('reset');
-          modal.modal('hide')
+        .done(function (bee) {
+          form.form('reset');
+          modal.modal('hide');
+          addBeeToMap(bee);
+          hive.center([fields.latitude, fields.longitude]);
         })
         .fail(function () {
-          $('.ui.form').form('set error');
+          form.form('set error');
         })
         .always(function () {
-          $('.ui.form').removeClass('loading')
+          form.removeClass('loading');
         });
     },
     fields: {
