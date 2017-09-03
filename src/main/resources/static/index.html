@@ -104,6 +104,11 @@
       }
     });
 
+    /**
+     * Define the acceptable boundaries of a number input.
+     *
+     * Syntax is minValue:maxValue.
+     */
     $.fn.form.settings.rules.boundaries = function (value, boundaries) {
       const [minValue, maxValue] = boundaries.split(':');
       return Number(value) >= Number(minValue) && Number(value) <= Number(maxValue);
