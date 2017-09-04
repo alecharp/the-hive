@@ -57,7 +57,7 @@
           form.form('reset');
           modal.modal('hide');
           addBeeToMap(bee);
-          hive.center([fields.latitude, fields.longitude]);
+          hive.panTo([fields.latitude, fields.longitude]);
         })
         .fail(function () {
           form.form('set error');
