@@ -131,4 +131,15 @@
       locationButton.toggleClass('disabled');
     })
   });
+
+  const geocodingButton = $('.ui.button#geocoding');
+  geocodingButton.click(function(event) {
+    event.preventDefault();
+    // TODO
+
+    form.form('set values', {
+      latitude: -90,
+      longitude: -180
+     });
+  });
 })();
