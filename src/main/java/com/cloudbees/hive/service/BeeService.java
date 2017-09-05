@@ -3,13 +3,9 @@ package com.cloudbees.hive.service;
 import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.repository.BeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,9 +40,7 @@ public class BeeService {
         return this.repository.findByEmail(email);
     }
 
-    public List<GrantedAuthority> authenticate(String email, String name) {
-        byEmail(email)
-            .orElse(add(new Bee(name, email)));
-        return Collections.singletonList(new SimpleGrantedAuthority("USER"));
+    public Bee authenticate(String email, String name) {
+        return byEmail(email).orElseGet(() -> add(new Bee(name, email)));
     }
 }
