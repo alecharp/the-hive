@@ -1,6 +1,7 @@
 package com.cloudbees.hive.model;
 
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -60,6 +61,19 @@ public class Bee {
         return longitude;
     }
 
+    /**
+     * Update the current {@code Bee} with the values of the {@code Bee} provided in parameter.
+     *
+     * This won't change the current ID, as it will be used in the repository to update the current {@code Bee}.
+     */
+    public Bee merge(Bee bee) {
+        this.name = bee.name;
+        this.email = bee.email;
+        this.latitude = bee.latitude;
+        this.longitude = bee.longitude;
+
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {

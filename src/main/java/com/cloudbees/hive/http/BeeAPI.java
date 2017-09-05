@@ -31,8 +31,9 @@ public class BeeAPI {
     }
 
     @PostMapping(value = "/api/bee")
-    public ResponseEntity<Bee> createBee(@RequestBody Bee bee) {
-        Bee added = this.service.add(bee);
+    @PreAuthorize("#bee.email == principal.email")
+    public ResponseEntity<Bee> update(@RequestBody Bee bee) {
+        Bee added = this.service.update(bee);
         return ResponseEntity.created(URI.create("/api/bee/" + added.getId())).body(added);
     }
 }

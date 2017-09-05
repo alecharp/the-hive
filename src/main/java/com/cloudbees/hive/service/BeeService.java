@@ -25,6 +25,14 @@ public class BeeService {
         return this.repository.save(bee);
     }
 
+    @Transactional
+    public Bee update(Bee bee) {
+        return byEmail(bee.getEmail())
+            .map(known -> known.merge(bee))
+            .map(this::add)
+            .orElseThrow(IllegalStateException::new);
+    }
+
     @Transactional(readOnly = true)
     public Iterable<Bee> all() {
         return this.repository.findAll();
