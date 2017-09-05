@@ -7,6 +7,11 @@
     continuousWorld: true
   }).addTo(hive);
 
+  /**
+   * Method to add a Bee on the map.
+   *
+   * @param bee a Bee object to add on the map
+   */
   const addBeeToMap = function (bee) {
     L.marker([bee.latitude, bee.longitude])
       .bindPopup(`<b>${bee.name}</b>`)
@@ -70,7 +75,10 @@
         type: 'POST',
         url: '/api/bee',
         data: JSON.stringify(fields),
-        contentType: 'application/json'
+        contentType: 'application/json',
+        beforeSend: function (request) {
+          request.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN'))
+        }
       })
         .done(function (bee) {
           form.form('reset');
@@ -151,4 +159,20 @@
       locationButton.toggleClass('disabled');
     })
   });
+
+  /**
+   * Function to get access to a specific cookie value.
+   *
+   * @param name the name of the cookie you want to access.
+   * @return the value of the cookie, or ''
+   */
+  const getCookie = function (name) {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let [key, value] = cookies[i].split('=');
+        if (key.trim() === name) return value.trim();
+      }
+      return '';
+    }
+  ;
 })();
