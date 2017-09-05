@@ -4,7 +4,11 @@ import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.service.BeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 
@@ -12,6 +16,7 @@ import java.net.URI;
  * @author Adrien Lecharpentier
  */
 @RestController
+@PreAuthorize("isAuthenticated() == true")
 public class BeeAPI {
     private final BeeService service;
 
@@ -21,15 +26,8 @@ public class BeeAPI {
     }
 
     @GetMapping(value = "/api/hive")
-    public Iterable<Bee> getHive() {
+    public Iterable<Bee> hive() {
         return this.service.all();
-    }
-
-    @GetMapping(value = "/api/bee/{id}")
-    public ResponseEntity<Bee> getBee(@PathVariable String id) {
-        return this.service.byId(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping(value = "/api/bee")

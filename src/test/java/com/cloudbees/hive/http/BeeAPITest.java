@@ -3,7 +3,6 @@ package com.cloudbees.hive.http;
 import com.cloudbees.hive.model.Bee;
 import com.cloudbees.hive.service.BeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import static java.util.Optional.empty;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,7 +33,6 @@ public class BeeAPITest {
     @Autowired private MockMvc mvc;
     @MockBean private BeeService beeService;
 
-    @Autowired private Gson gson;
     @Autowired private ObjectMapper objectMapper;
 
     @Test
@@ -62,25 +57,6 @@ public class BeeAPITest {
             .andExpect(jsonPath("$[*].latitude", Matchers.hasItems(48.864716, 37.392529)))
             .andExpect(jsonPath("$[*].longitude", Matchers.hasItems(2.349014, -5.994072)))
             .andReturn();
-    }
-
-    @Test
-    public void shouldBeAbleToRetrieveOneBee() throws Exception {
-        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242);
-        given(this.beeService.byId(anyString())).willReturn(Optional.of(maya));
-
-        this.mvc.perform(get("/api/bee/foobar"))
-            .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().json(gson.toJson(maya)));
-    }
-
-    @Test
-    public void shouldNotBeAbleToRetrieveNonexistentBees() throws Exception {
-        given(this.beeService.byId(anyString())).willReturn(empty());
-
-        this.mvc.perform(get("/api/bee/foobar"))
-            .andExpect(status().isNotFound());
     }
 
     @Test
