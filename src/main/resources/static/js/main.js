@@ -12,6 +12,7 @@
       .bindPopup(`<b>${bee.name}</b>`)
       .addTo(hive);
   };
+
   $.get('/api/hive', function(bees) {
     bees.forEach(addBeeToMap);
   });
@@ -22,10 +23,28 @@
       return false;
     },
     onDeny: function () {
-      $('.ui.form').form('reset');
+      form.form('reset');
+    },
+    onShow: function () {
+      form.addClass('loading');
+      $.get('/api/me')
+        .done(function (bee) {
+            const {name, email, latitude, longitude} = bee;
+            form.form('set values', {
+              name, email, latitude, longitude
+            });
+          }
+        )
+        .fail(function () {
+          form.form('set error');
+          form.transition('shake');
+        })
+        .always(function () {
+          form.toggleClass('loading');
+        });
     }
   });
-  $('button#create-bee').click(function(event) {
+  $('button#create-bee').click(function (event) {
     event.preventDefault();
     modal.modal('show');
   });
@@ -45,7 +64,7 @@
     inline: true,
     onSuccess: function (e, fields) {
       if (e !== undefined) e.preventDefault();
-      $('.ui.form').addClass('loading');
+      form.addClass('loading');
 
       $.ajax({
         type: 'POST',
@@ -61,6 +80,7 @@
         })
         .fail(function () {
           form.form('set error');
+          form.transition('shake');
         })
         .always(function () {
           form.removeClass('loading');
