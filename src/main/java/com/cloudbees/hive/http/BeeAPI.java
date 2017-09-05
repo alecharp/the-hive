@@ -5,6 +5,7 @@ import com.cloudbees.hive.service.BeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,5 +36,10 @@ public class BeeAPI {
     public ResponseEntity<Bee> update(@RequestBody Bee bee) {
         Bee added = this.service.update(bee);
         return ResponseEntity.created(URI.create("/api/bee/" + added.getId())).body(added);
+    }
+
+    @GetMapping(value = "/api/me")
+    public Bee me(@AuthenticationPrincipal Bee bee) {
+        return bee;
     }
 }
