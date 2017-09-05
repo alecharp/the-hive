@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Adrien Lecharpentier
  */
 @SpringBootApplication
-public class Hive {
+public class HiveApp {
     public static void main(String[] args) {
-        SpringApplication.run(Hive.class, args);
+        SpringApplication.run(HiveApp.class, args);
     }
 }

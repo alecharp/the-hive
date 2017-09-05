@@ -4,7 +4,7 @@ A way to visualize all the bees of CloudBees.
 
 == Build
 
- - requires: Maven 3.3.9, JDK 8
+ - requires: Maven 3.5.0, JDK 8
 
 ```
 mvn clean verify
@@ -18,7 +18,7 @@ Either
 mvn spring-boot:run
 ```
 
-or from your IDE, run the class `com.cloudbees.hive.Hive`
+or from your IDE, run the class `com.cloudbees.hive.HiveApp`
 
 == Database
 

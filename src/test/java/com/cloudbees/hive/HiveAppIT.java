@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest
-public class HiveIT {
+public class HiveAppIT {
 
     @Autowired private WebApplicationContext context;
     private WebDriver webDriver;
