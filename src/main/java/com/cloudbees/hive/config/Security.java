@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -52,5 +53,10 @@ public class Security extends WebSecurityConfigurerAdapter {
                 (String)map.get(EMAIL_ATTR),
                 (String)map.get(NAME_ATTR)
             );
+    }
+
+    @Bean @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }
