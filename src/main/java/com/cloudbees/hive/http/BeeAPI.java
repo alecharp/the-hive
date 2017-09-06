@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-
 /**
  * @author Adrien Lecharpentier
  */
@@ -34,8 +32,8 @@ public class BeeAPI {
     @PostMapping(value = "/api/bee")
     @PreAuthorize("#bee.email == principal.email")
     public ResponseEntity<Bee> update(@RequestBody Bee bee) {
-        Bee added = this.service.update(bee);
-        return ResponseEntity.created(URI.create("/api/bee/" + added.getId())).body(added);
+        Bee updated = this.service.update(bee);
+        return ResponseEntity.ok(updated);
     }
 
     @GetMapping(value = "/api/me")

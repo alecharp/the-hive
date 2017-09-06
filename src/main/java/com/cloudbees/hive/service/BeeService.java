@@ -39,11 +39,6 @@ public class BeeService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Bee> byId(String id) {
-        return Optional.of(this.repository.findOne(id));
-    }
-
-    @Transactional(readOnly = true)
     protected Optional<Bee> byEmail(String email) {
         return this.repository.findByEmail(email);
     }
