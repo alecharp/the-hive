@@ -10,21 +10,25 @@ pipeline {
     stage('Build') {
       steps {
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
-          sh 'mvn clean package -Dmaven.test.skip=true -s settings.xml'
+          sh 'mvn clean package -Dmaven.test.skip=true -s settings.xml -Dfindbugs.failOnError=false'
+        }
+      }
+      post {
+        always {
+          findbugs(pattern: 'target/findbugsXml.xml')
         }
       }
     }
     stage('Test') {
       steps {
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
-          sh 'mvn clean verify -s settings.xml -P coverage -Dfindbugs.failOnError=false'
+          sh 'mvn clean verify -s settings.xml -P coverage'
         }
       }
       post {
         always {
           junit allowEmptyResults: true, testResults: 'target/*-reports/*.xml'
-          step([$class: 'JacocoPublisher', classPattern: 'target/classes', execPattern: 'target/jacoco.exec', sourcePattern: 'src/main/java'])
-          step([$class: 'FindBugsPublisher', pattern: 'target/findbugsXml.xml'])
+          jacoco(classPattern: 'target/classes', execPattern: 'target/jacoco.exec', sourcePattern: 'src/main/java')
         }
       }
     }
