@@ -30,7 +30,7 @@ public class HiveIT {
         webDriver = MockMvcHtmlUnitDriverBuilder
             .webAppContextSetup(context)
             .useMockMvcForHosts("localhost")
-            .javascriptEnabled(true)
+            .javascriptEnabled(false)
             .build();
     }
 
