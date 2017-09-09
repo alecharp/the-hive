@@ -10,7 +10,7 @@ pipeline {
     stage('Build') {
       steps {
         script {
-          def commitID = sh(returnStdout: true, script: 'git rev-parse --short --verify HEAD')
+          def commitID = sh(returnStdout: true, script: 'git rev-parse --short --verify HEAD')?.trim()
           imageName = "alecharp/the-hive:${commitID}"
         }
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
