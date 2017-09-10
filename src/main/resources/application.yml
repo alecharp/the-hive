@@ -25,5 +25,5 @@ spring:
 spring.profiles: prod
 spring.datasource:
   url: ${DATABASE_URL}
-  username: ${DATABASE_USER}
-  password: ${DATABASE_PASSWORD}
+  username: ${POSTGRES_USER}
+  password: ${POSTGRES_PASSWORD}

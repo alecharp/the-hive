@@ -4,7 +4,7 @@ A way to visualize all the bees of CloudBees.
 
 == Build
 
- - requires: Maven 3.3.9, JDK 8
+ - requires: Maven 3.5.0, JDK 8
 
 ```
 mvn clean verify
@@ -20,14 +20,34 @@ mvn spring-boot:run
 
 or from your IDE, run the class `com.cloudbees.hive.Hive`
 
+=== Docker
+
+You can use the Docker image to run the application
+
+```
+docker run --rm -ti \
+  -e DATABASE_URL=jdbc:postgres://localhost/the-hive \
+  -e POSTGRES_USERNAME=the-hive \
+  -e POSTGRES_PASSWORD=my-local-database-password \
+  -p 8080:8080 \
+  alecharp/the-hive
+```
+
+=== Docker Compose
+
+You can use the `docker-compose.yml` to start the application and the required database. All you need is to have a `.docker-env` file at the same level as the `docker-compose.yml` file to provide
+
+ - `POSTGRES_USERNAME`
+ - `POSTGRES_PASSWORD`
+
 == Database
 
 You can start a local database with Docker:
 
 ```
 docker run --name the-hive-database -d --rm \
-  -e POSTGRES_PASSWORD=my-local-database-password \
   -e POSTGRES_USER=the-hive \
+  -e POSTGRES_PASSWORD=my-local-database-password \
   -p 5432:5432 \
   postgres:9.6
 ```
