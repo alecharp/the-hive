@@ -4,10 +4,11 @@ pipeline {
   options {
     buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '15'))
   }
-  agent { docker 'alecharp/maven-build-tools' }
+  agent none // TODO bug
 
   stages {
     stage('Build') {
+      agent { docker 'alecharp/maven-build-tools' } // TODO bug
       steps {
         script {
           def commitID = sh(returnStdout: true, script: 'git rev-parse --short --verify HEAD')?.trim()
@@ -24,6 +25,7 @@ pipeline {
       }
     }
     stage('Test') {
+      agent { docker 'alecharp/maven-build-tools' } // TODO bug
       steps {
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
           sh 'mvn clean verify -s settings.xml -P coverage -Dfindbugs.failOnError=false'
@@ -39,6 +41,9 @@ pipeline {
     }
     stage('Docker') {
       agent { label 'docker' }
+      when {
+        anyOf { branch 'master'; branch 'develop' }
+      }
       steps {
         unstash 'docker'
         sh "docker build -t ${imageName} -f src/main/docker/Dockerfile . && docker push ${imageName}"
