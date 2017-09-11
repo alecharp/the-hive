@@ -13,46 +13,61 @@
    * @param bee a Bee object to add on the map
    */
   const addBeeToMap = function (bee) {
-    L.marker([bee.latitude, bee.longitude])
-      .bindPopup(`<b>${bee.name}</b>`)
-      .addTo(hive);
+    if (bee.latitude !== 0 && bee.longitude !== 0) {
+      L.marker([bee.latitude, bee.longitude])
+        .bindPopup(`<b>${bee.name}</b>`)
+        .addTo(hive);
+    }
   };
 
-  $.get('/api/hive', function(bees) {
-    bees.forEach(addBeeToMap);
-  });
-
-  const modal = $('.ui.modal');
-  modal.modal({
-    onApprove: function () {
-      return false;
-    },
-    onDeny: function () {
-      form.form('reset');
-    },
-    onShow: function () {
-      form.addClass('loading');
-      $.get('/api/me')
-        .done(function (bee) {
-            const {name, email, latitude, longitude} = bee;
-            form.form('set values', {
-              name, email, latitude, longitude
-            });
-          }
-        )
-        .fail(function () {
-          form.form('set error');
-          form.transition('shake');
-        })
-        .always(function () {
-          form.toggleClass('loading');
+  $.get('/api/me')
+    .fail(function (ex) {
+      const status = ex.status;
+      if (status === 401 || status === 403) {
+        $('.ui.modal#login')
+          .modal({
+            blurring: true,
+            closable: false
+          })
+          .modal('show')
+      }
+    })
+    .done(function () {
+      $.get('/api/hive')
+        .done(function (bees) {
+          bees.forEach(addBeeToMap)
         });
-    }
-  });
-  $('button#create-bee').click(function (event) {
-    event.preventDefault();
-    modal.modal('show');
-  });
+    });
+
+  const editProfileModal = $('.ui.modal#profile')
+    .modal({
+      blurring: true,
+      onApprove: function () {
+        return false;
+      },
+      onDeny: function () {
+        profileForm.form('reset');
+      },
+      onShow: function () {
+        profileForm.addClass('loading');
+        $.get('/api/me')
+          .done(function (bee) {
+              const {name, email, latitude, longitude} = bee;
+              profileForm.form('set values', {
+                name, email, latitude, longitude
+              });
+            }
+          )
+          .fail(function () {
+            profileForm.form('set error');
+            profileForm.transition('shake');
+          })
+          .always(function () {
+            profileForm.toggleClass('loading');
+          });
+      }
+    })
+    .modal('attach events', '#profileBtn', 'show');
 
   /**
    * Define the acceptable boundaries of a number input.
@@ -64,12 +79,12 @@
     return Number(value) >= Number(minValue) && Number(value) <= Number(maxValue);
   };
 
-  const form = $('.ui.form');
-  form.form({
+  const profileForm = editProfileModal.find('.ui.form');
+  profileForm.form({
     inline: true,
     onSuccess: function (e, fields) {
       if (e !== undefined) e.preventDefault();
-      form.addClass('loading');
+      profileForm.addClass('loading');
 
       $.ajax({
         type: 'POST',
@@ -81,17 +96,17 @@
         }
       })
         .done(function (bee) {
-          form.form('reset');
-          modal.modal('hide');
+          profileForm.form('reset');
+          editProfileModal.modal('hide');
           addBeeToMap(bee);
           hive.panTo([fields.latitude, fields.longitude]);
         })
         .fail(function () {
-          form.form('set error');
-          form.transition('shake');
+          profileForm.form('set error');
+          profileForm.transition('shake');
         })
         .always(function () {
-          form.removeClass('loading');
+          profileForm.removeClass('loading');
         });
     },
     fields: {
@@ -136,9 +151,9 @@
       }
     }
   });
-  $('button#validate-form').click(function(event) {
+  $('button#validate-form').click(function (event) {
     event.preventDefault();
-    form.form('validate form');
+    profileForm.form('validate form');
   });
 
   const locationButton = $('.ui.button#location');
@@ -149,7 +164,7 @@
     event.preventDefault();
     locationButton.toggleClass('loading');
     navigator.geolocation.getCurrentPosition(function (position) {
-      form.form('set values', {
+      profileForm.form('set values', {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
