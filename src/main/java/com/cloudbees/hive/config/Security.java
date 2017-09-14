@@ -2,6 +2,7 @@ package com.cloudbees.hive.config;
 
 import com.cloudbees.hive.service.BeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ public class Security extends WebSecurityConfigurerAdapter {
     private static final String NAME_ATTR = "name";
 
     private final BeeService beeService;
+    @Value("${the-hive.domain}") private String domain;
 
     @Autowired
     public Security(BeeService beeService) {
@@ -52,11 +54,16 @@ public class Security extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PrincipalExtractor principalExtractor() {
-        return map ->
-            beeService.authenticate(
-                (String)map.get(EMAIL_ATTR),
-                (String)map.get(NAME_ATTR)
+        return map -> {
+            String email = (String) map.get(EMAIL_ATTR);
+            if (email == null || email.isEmpty() || !email.endsWith(this.domain)) {
+                throw new AccountRejectedException("Cannot accept connection from " + email);
+            }
+            return beeService.authenticate(
+                email,
+                (String) map.get(NAME_ATTR)
             );
+        };
     }
 
     @Bean @Override

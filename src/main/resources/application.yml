@@ -1,3 +1,5 @@
+the-hive.domain: cloudbees.com
+
 server:
   compression:
     enabled: true
