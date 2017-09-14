@@ -91,8 +91,8 @@
         url: '/api/bee',
         data: JSON.stringify(fields),
         contentType: 'application/json',
-        beforeSend: function (request) {
-          request.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN'))
+        beforeSend: function (req) {
+          req.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN'))
         }
       })
         .done(function (bee) {
@@ -156,6 +156,18 @@
     profileForm.form('validate form');
   });
 
+  $('button#logoutBtn')
+    .click(function (event) {
+      event.preventDefault();
+      $.ajax({
+        type: 'POST',
+        url: '/api/me/logout',
+        beforeSend: function(req) {
+          req.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN'))
+        }
+      })
+    });
+
   const locationButton = $('.ui.button#location');
   if (!("geolocation" in navigator)) {
     locationButton.toggleClass('disabled');
@@ -182,12 +194,11 @@
    * @return the value of the cookie, or ''
    */
   const getCookie = function (name) {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        let [key, value] = cookies[i].split('=');
-        if (key.trim() === name) return value.trim();
-      }
-      return '';
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      let [key, value] = cookies[i].split('=');
+      if (key.trim() === name) return value.trim();
     }
-  ;
+    return '';
+  };
 })();

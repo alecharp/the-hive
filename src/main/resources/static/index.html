@@ -29,7 +29,7 @@
       height: 100vh;
       width: 100vw;
     }
-    #profileBtn {
+    #menu {
       position: absolute;
       top: 20px;
       right: 20px;
@@ -40,8 +40,15 @@
 <body>
 
 <div id="content">
-  <div class="ui button massive icon" data-tooltip="Profile" data-position="left center" id="profileBtn">
-    <i class="icon user circle black"></i>
+  <div class="ui vertical labeled icon buttons blue" id="menu">
+    <button class="ui button" id="profileBtn">
+      <i class="icon user circle"></i>
+      Profile
+    </button>
+    <button class="ui button" id="logoutBtn">
+      <i class="icon power"></i>
+      Logout
+    </button>
   </div>
 </div>
 
