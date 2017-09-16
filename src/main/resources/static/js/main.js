@@ -1,7 +1,8 @@
 (function () {
+  const max_zoom = 7;
   const hive = L.map('content').setView([48.85, 2.35], 3);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 7,
+    maxZoom: max_zoom,
     minZoom: 3,
     attribution: '&copy;&nspar;<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     continuousWorld: true
@@ -14,7 +15,7 @@
   };
 
   const zoom2Bee = function (bee) {
-    hive.flyTo(L.latLng(bee.latitude, bee.longitude),5);
+    hive.flyTo(L.latLng(bee.latitude, bee.longitude),max_zoom);
   };
 
   $.get('/api/hive', function(bees) {
@@ -123,9 +124,6 @@
       },
       place_input: {
         rules: [{
-          type: 'empty',
-          prompt: 'Place cannot be empty'
-        }, {
           type: 'geometry',
           prompt: 'A place must be selected from the suggestions on the dropdown list'
         }]
@@ -136,6 +134,7 @@
   $('button#validate-form').click(function(event) {
     event.preventDefault();
     form.form('validate form');
+    geometry=false;
   });
 
   const locationButton = $('.ui.button#location');
@@ -150,6 +149,7 @@
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
+      geometry=true;
       locationButton.toggleClass('loading');
     }, function () {
       locationButton.toggleClass('loading');
@@ -157,39 +157,56 @@
     })
   });
 
-  const geocodingButton = $('.ui.button#geocoding'); // it is not used
   const card = $('#pac-card');
   const input = document.getElementById('pac-input');
-  //const input = $('.ui.input#pac-input');
   const infowindowContent = document.getElementById('infowindow-content');
-  //const infowindowContent = $('#infowindow-content');
+  const politicalBoundary = 'political'; // Bee.place just contains Administrative/Political location
   const geoCoding = function() {
-    geometry=false;
     var autocomplete = new google.maps.places.Autocomplete(input);
     var infowindow = new google.maps.InfoWindow();
     infowindow.setContent(infowindowContent);
     autocomplete.addListener('place_changed', function() {
-    infowindow.close();
-    var place = autocomplete.getPlace();
-      if (place.geometry) {
+      infowindow.close();
+      geometry=false;
+      var place = autocomplete.getPlace();
+      if (place.geometry) { // User has selected a place from the autocomplete dropdown menu
         geometry=true;
+        var politicalPlaces = [];
         var place_output_str = '';
         if (place.address_components) {
-          //TODO place: just select political types: country - administrative_area (level 1 and 2). Not streets and numbers
-          place_output_str = [
-            (place.address_components[0] && place.address_components[0].long_name || ''),
-            (place.address_components[1] && place.address_components[1].long_name || ''),
-            (place.address_components[2] && place.address_components[2].long_name || '')
-            ].join(' ');
+          for (p in place.address_components) {
+            var politicalFlag = false;
+            for (t in place.address_components[p].types){
+               if (place.address_components[p].types[t] == politicalBoundary){
+                  politicalFlag = true;
+                  break;
+                }
+              }
+            if (politicalFlag && place.address_components[p]){
+                politicalPlaces.push(place.address_components[p].long_name)
+            }
+          }
         }
-        console.log("place_output :" + place_output_str)
+        // Bee.place formatting: deleting duplicates entries (City = Municipality, ie 'Calle Bami 14, Seville') and separated by comma
+        var uniquePoliticalPlaces = [];
+        $.each(politicalPlaces, function(i, el){
+            if($.inArray(el, uniquePoliticalPlaces) === -1) uniquePoliticalPlaces.push(el);
+        });
+        for (s in uniquePoliticalPlaces) {
+           if (s == uniquePoliticalPlaces.length - 1){
+              place_output_str = place_output_str.concat(uniquePoliticalPlaces[s])
+           } else {
+              place_output_str = place_output_str.concat(uniquePoliticalPlaces[s] + ", ")
+           }
+        }
         // Populating field
         form.form('set values', {
-        latitude: place.geometry.location.lat(),
-        longitude: place.geometry.location.lng(),
-        //TODO place_output_str: >>> Bee.place
-        place_output: place_output_str
+          latitude: place.geometry.location.lat(),
+          longitude: place.geometry.location.lng(),
+          //TODO place_output_str: >>> Bee.place
+          //place_output: place_output_str
         });
+        console.log("place_output :" + place_output_str)
       }
     });
   }
