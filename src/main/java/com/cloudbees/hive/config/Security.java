@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author Adrien Lecharpentier
  */
@@ -44,7 +42,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/api/me/logout")
                 .deleteCookies("JSESSIONID", "XSRF-TOKEN")
-                .logoutSuccessHandler((req, resp, ex) -> resp.setStatus(HttpServletResponse.SC_OK))
+                .logoutSuccessHandler((req, resp, ex) -> resp.sendRedirect("/"))
             .and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())

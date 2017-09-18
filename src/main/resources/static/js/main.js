@@ -166,6 +166,9 @@
           req.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN'))
         }
       })
+        .done(function() {
+          window.location.reload();
+        });
     });
 
   const locationButton = $('.ui.button#location');
