@@ -122,7 +122,7 @@
           prompt: 'The latitude must be higher than -180 and less than 180'
         }]
       },
-      place_input: {
+      location_input: {
         rules: [{
           type: 'geometry',
           prompt: 'A place must be selected from the suggestions on the dropdown list'
@@ -158,24 +158,24 @@
   });
 
   const card = $('#pac-card');
-  const input = document.getElementById('pac-input');
-  const infowindowContent = document.getElementById('infowindow-content');
+  const input = document.getElementById('location_input');
+  const infowindowContent = document.getElementById('infowindow_content');
   const politicalBoundary = 'political'; // Bee.place just contains Administrative/Political location
   const geoCoding = function() {
-    var autocomplete = new google.maps.places.Autocomplete(input);
-    var infowindow = new google.maps.InfoWindow();
+    let autocomplete = new google.maps.places.Autocomplete(input);
+    let infowindow = new google.maps.InfoWindow();
     infowindow.setContent(infowindowContent);
     autocomplete.addListener('place_changed', function() {
       infowindow.close();
       geometry=false;
-      var place = autocomplete.getPlace();
+      let place = autocomplete.getPlace();
       if (place.geometry) { // User has selected a place from the autocomplete dropdown menu
         geometry=true;
-        var politicalPlaces = [];
-        var place_output_str = '';
+        let politicalPlaces = [];
+        let place_output_str = '';
         if (place.address_components) {
           for (p in place.address_components) {
-            var politicalFlag = false;
+            let politicalFlag = false;
             for (t in place.address_components[p].types){
                if (place.address_components[p].types[t] == politicalBoundary){
                   politicalFlag = true;
@@ -188,7 +188,7 @@
           }
         }
         // Bee.place formatting: deleting duplicates entries (City = Municipality, ie 'Calle Bami 14, Seville') and separated by comma
-        var uniquePoliticalPlaces = [];
+        let uniquePoliticalPlaces = [];
         $.each(politicalPlaces, function(i, el){
             if($.inArray(el, uniquePoliticalPlaces) === -1) uniquePoliticalPlaces.push(el);
         });
@@ -206,8 +206,8 @@
           //TODO place_output_str: >>> Bee.place
           //place_output: place_output_str
         });
-        console.log("place_output :" + place_output_str)
       }
     });
   }
+
 })();
