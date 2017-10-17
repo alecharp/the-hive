@@ -3,7 +3,7 @@
 JAVA_OPTS="-XX:+UseG1GC
  -XX:+UseStringDeduplication
  -XX:+UnlockExperimentalVMOptions
- -Xmx2G -Xms2G
+ -XX:+UseCGroupMemoryLimitForHeap
  -Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true
 "
 if [[ $# -gt 0 ]]; then
