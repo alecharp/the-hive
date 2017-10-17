@@ -15,10 +15,10 @@
   };
 
   const zoom2Bee = function (bee) {
-    hive.flyTo(L.latLng(bee.latitude, bee.longitude),max_zoom);
+    hive.flyTo(L.latLng(bee.latitude, bee.longitude), max_zoom);
   };
 
-  $.get('/api/hive', function(bees) {
+  $.get('/api/hive', function (bees) {
     bees.forEach(addBeeToMap);
   });
 
@@ -31,7 +31,7 @@
       $('.ui.form').form('reset');
     }
   });
-  $('button#create-bee').click(function(event) {
+  $('button#create-bee').click(function (event) {
     event.preventDefault();
     modal.modal('show');
     geoCoding();
@@ -51,10 +51,10 @@
    * Verify that one of the options from the suggested locations on the dropdowm menu has been selecting input before submitting the form
    *
    */
-  var geometry;
-  $.fn.form.settings.rules.geometry = function() {
+  let geometry;
+  $.fn.form.settings.rules.geometry = function () {
     return geometry;
-  }
+  };
 
   const form = $('.ui.form');
   form.form({
@@ -122,7 +122,7 @@
           prompt: 'The latitude must be higher than -180 and less than 180'
         }]
       },
-      location_input: {
+      location: {
         rules: [{
           type: 'geometry',
           prompt: 'A place must be selected from the suggestions on the dropdown list'
@@ -131,10 +131,10 @@
     }
   });
 
-  $('button#validate-form').click(function(event) {
+  $('button#validate-form').click(function (event) {
     event.preventDefault();
     form.form('validate form');
-    geometry=false;
+    geometry = false;
   });
 
   const locationButton = $('.ui.button#location');
@@ -149,7 +149,7 @@
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
       });
-      geometry=true;
+      geometry = true;
       locationButton.toggleClass('loading');
     }, function () {
       locationButton.toggleClass('loading');
@@ -157,56 +157,15 @@
     })
   });
 
-  const card = $('#pac-card');
-  const input = document.getElementById('location_input');
-  const infowindowContent = document.getElementById('infowindow_content');
-  const politicalBoundary = 'political'; // Bee.place just contains Administrative/Political location
-  const geoCoding = function() {
-    let autocomplete = new google.maps.places.Autocomplete(input);
-    let infowindow = new google.maps.InfoWindow();
-    infowindow.setContent(infowindowContent);
-    autocomplete.addListener('place_changed', function() {
-      infowindow.close();
-      geometry=false;
-      let place = autocomplete.getPlace();
-      if (place.geometry) { // User has selected a place from the autocomplete dropdown menu
-        geometry=true;
-        let politicalPlaces = [];
-        let place_output_str = '';
-        if (place.address_components) {
-          for (p in place.address_components) {
-            let politicalFlag = false;
-            for (t in place.address_components[p].types){
-               if (place.address_components[p].types[t] == politicalBoundary){
-                  politicalFlag = true;
-                  break;
-                }
-              }
-            if (politicalFlag && place.address_components[p]){
-                politicalPlaces.push(place.address_components[p].long_name)
-            }
-          }
-        }
-        // Bee.place formatting: deleting duplicates entries (City = Municipality, ie 'Calle Bami 14, Seville') and separated by comma
-        let uniquePoliticalPlaces = [];
-        $.each(politicalPlaces, function(i, el){
-            if($.inArray(el, uniquePoliticalPlaces) === -1) uniquePoliticalPlaces.push(el);
-        });
-        for (s in uniquePoliticalPlaces) {
-           if (s == uniquePoliticalPlaces.length - 1){
-              place_output_str = place_output_str.concat(uniquePoliticalPlaces[s])
-           } else {
-              place_output_str = place_output_str.concat(uniquePoliticalPlaces[s] + ", ")
-           }
-        }
-        // Populating field
-        form.form('set values', {
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng(),
-          //TODO place_output_str: >>> Bee.place
-          //place_output: place_output_str
-        });
-      }
+  const geoCoding = function () {
+    let autocomplete = new google.maps.places.Autocomplete(document.getElementById('location_input'), {regions: 'locality'});
+    autocomplete.addListener('place_changed', function () {
+      geometry = true;
+      const place = autocomplete.getPlace();
+      form.form('set values', {
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng(),
+      });
     });
   }
 
