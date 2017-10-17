@@ -4,19 +4,31 @@ A way to visualize all the bees of CloudBees.
 
 == Build
 
- - requires: Maven 3.5.0, JDK 8
+=== Maven project
 
-```
+IMPORTANT: requires: Maven 3.5.0, JDK 8
+
+....
 mvn clean verify
-```
+....
+
+=== Docker image
+
+WARNING: The maven project must be build first. The Docker image is built using the `target/the-hive.jar` file.
+
+....
+docker build -t ${USER}/the-hive -f src/main/docker/Dockerfile .
+....
 
 == Run
 
+WARNING: You need to have a running database. Please see <<_database, Database section>>
+
 Either
 
-```
+....
 mvn spring-boot:run
-```
+....
 
 or from your IDE, run the class `com.cloudbees.hive.Hive`
 
@@ -24,41 +36,49 @@ or from your IDE, run the class `com.cloudbees.hive.Hive`
 
 You can use the Docker image to run the application
 
-```
+....
 docker run --rm -ti \
-  -e DATABASE_URL=jdbc:postgres://localhost/the-hive \
   -e POSTGRES_USERNAME=the-hive \
   -e POSTGRES_PASSWORD=my-local-database-password \
   -p 8080:8080 \
-  alecharp/the-hive
-```
+  ${USER}/the-hive
+....
 
 === Docker Compose
 
-You can use the `docker-compose.yml` to start the application and the required database. All you need is to have a `.docker-env` file at the same level as the `docker-compose.yml` file to provide
+WARNING: The Docker image must have been built or generally available under ${USER}/the-hive
+
+You can use the `docker-compose.yml` to start the application and the required database.
+All you need is to have a `.docker-env` file at the same level as the `docker-compose.yml` file to provide
 
  - `POSTGRES_USERNAME`
  - `POSTGRES_PASSWORD`
+
+Then you can run
+
+....
+docker-compose up
+....
 
 == Database
 
 You can start a local database with Docker:
 
-```
+....
 docker run --name the-hive-database -d --rm \
   -e POSTGRES_USER=the-hive \
   -e POSTGRES_PASSWORD=my-local-database-password \
   -p 5432:5432 \
   postgres:9.6
-```
+....
 
 Make sure to reflect the password (`POSTGRES_PASSWORD`) in `src/main/resources/application.yml#21`
 
 You can then debug the database through:
 
-```
+....
 docker run --rm -ti \
   --link the-hive-database:postgres \
   postgres:9.6 \
   psql -h postgres -U the-hive
-```
+....

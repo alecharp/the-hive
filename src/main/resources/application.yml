@@ -7,7 +7,9 @@ server:
 
 spring:
   jpa.hibernate.ddl-auto: update
-  datasource.driver-class-name: org.postgresql.Driver
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}/${DATABASE_NAME:the-hive}
 
 ---
 
@@ -16,7 +18,6 @@ server.port: 8181
 spring:
   jpa.hibernate.ddl-auto: update
   datasource:
-    url: jdbc:postgresql://localhost/the-hive
     username: the-hive
     password: my-local-database-password
 
@@ -24,6 +25,5 @@ spring:
 
 spring.profiles: prod
 spring.datasource:
-  url: ${DATABASE_URL}
   username: ${POSTGRES_USER}
   password: ${POSTGRES_PASSWORD}
