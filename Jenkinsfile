@@ -4,11 +4,11 @@ pipeline {
   options {
     buildDiscarder(logRotator(artifactNumToKeepStr: '5', numToKeepStr: '15'))
   }
-  agent none // TODO bug
+  agent none // TODO https://issues.jenkins-ci.org/browse/JENKINS-33510
 
   stages {
     stage('Build') {
-      agent { docker 'alecharp/maven-build-tools' } // TODO bug
+      agent { docker 'alecharp/maven-build-tools' } // TODO https://issues.jenkins-ci.org/browse/JENKINS-33510
       steps {
         script {
           def commitID = sh(returnStdout: true, script: 'git rev-parse --short --verify HEAD')?.trim()
@@ -25,7 +25,7 @@ pipeline {
       }
     }
     stage('Test') {
-      agent { docker 'alecharp/maven-build-tools' } // TODO bug
+      agent { docker 'alecharp/maven-build-tools' } // TODO https://issues.jenkins-ci.org/browse/JENKINS-33510
       steps {
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
           sh 'mvn clean verify -s settings.xml -P coverage -Dfindbugs.failOnError=false'
