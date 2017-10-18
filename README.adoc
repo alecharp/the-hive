@@ -1,30 +1,20 @@
 = The hive
 
-A way to visualize all the bees of CloudBees.
+A way to visualise all the bees of CloudBees.
 
 == Build
 
-=== Maven project
-
-IMPORTANT: requires: Maven 3.5.0, JDK 8
-
 ....
-mvn clean verify
-....
-
-=== Docker image
-
-WARNING: The maven project must be build first. The Docker image is built using the `target/the-hive.jar` file.
-
-....
-docker build -t ${USER}/the-hive -f src/main/docker/Dockerfile .
+make build
 ....
 
 == Run
 
 WARNING: You need to have a running database. Please see <<_database, Database section>>
 
-Either
+NOTE: Using `docker-compose` is a better choice to try the application. Use Maven when you want to develop on the application.
+
+=== Maven project
 
 ....
 mvn spring-boot:run
@@ -32,14 +22,16 @@ mvn spring-boot:run
 
 or from your IDE, run the class `com.cloudbees.hive.Hive`
 
-=== Docker
+=== Docker container
 
 You can use the Docker image to run the application
 
 ....
 docker run --rm -ti \
+  -e DATABASE_HOST=db \
   -e POSTGRES_USERNAME=the-hive \
   -e POSTGRES_PASSWORD=my-local-database-password \
+  --link db:your-postgresql-container
   -p 8080:8080 \
   ${USER}/the-hive
 ....
