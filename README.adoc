@@ -1,44 +1,76 @@
 = The hive
 
-A way to visualize all the bees of CloudBees.
+A way to visualise all the bees of CloudBees.
 
 == Build
 
- - requires: Maven 3.3.9, JDK 8
-
-```
-mvn clean verify
-```
+....
+make build
+....
 
 == Run
 
-Either
+WARNING: You need to have a running database. Please see <<_database, Database section>>
 
-```
+NOTE: Using `docker-compose` is a better choice to try the application. Use Maven when you want to develop on the application.
+
+=== Maven project
+
+....
 mvn spring-boot:run
-```
+....
 
 or from your IDE, run the class `com.cloudbees.hive.Hive`
+
+=== Docker container
+
+You can use the Docker image to run the application
+
+....
+docker run --rm -ti \
+  -e DATABASE_HOST=db \
+  -e POSTGRES_USERNAME=the-hive \
+  -e POSTGRES_PASSWORD=my-local-database-password \
+  --link db:your-postgresql-container
+  -p 8080:8080 \
+  ${USER}/the-hive
+....
+
+=== Docker Compose
+
+WARNING: The Docker image must have been built or generally available under ${USER}/the-hive
+
+You can use the `docker-compose.yml` to start the application and the required database.
+All you need is to have a `.docker-env` file at the same level as the `docker-compose.yml` file to provide
+
+ - `POSTGRES_USER`
+ - `POSTGRES_PASSWORD`
+
+Then you can run
+
+....
+docker-compose up
+....
 
 == Database
 
 You can start a local database with Docker:
 
-```
+....
 docker run --name the-hive-database -d --rm \
-  -e POSTGRES_PASSWORD=my-local-database-password \
   -e POSTGRES_USER=the-hive \
+  -e POSTGRES_PASSWORD=my-local-database-password \
   -p 5432:5432 \
   postgres:9.6
-```
+....
 
 Make sure to reflect the password (`POSTGRES_PASSWORD`) in `src/main/resources/application.yml#21`
 
 You can then debug the database through:
 
-```
+....
 docker run --rm -ti \
   --link the-hive-database:postgres \
   postgres:9.6 \
   psql -h postgres -U the-hive
-```
+....
