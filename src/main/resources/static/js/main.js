@@ -29,6 +29,9 @@
     },
     onDeny: function () {
       $('.ui.form').form('reset');
+    },
+    onHide: function(elemnt) {
+      $('.ui.form').form('reset');
     }
   });
   $('button#create-bee').click(function (event) {
@@ -98,30 +101,6 @@
           prompt: 'Specified email is not valid'
         }]
       },
-      latitude: {
-        rules: [{
-          type: 'empty',
-          prompt: 'You must specify the latitude of your location'
-        }, {
-          type: 'number',
-          prompt: 'The latitude must be a decimal number'
-        }, {
-          type: 'boundaries[-90:90]',
-          prompt: 'The latitude must be higher than -90 and less than 90'
-        }]
-      },
-      longitude: {
-        rules: [{
-          type: 'empty',
-          prompt: 'You must specify the longitude of your location'
-        }, {
-          type: 'number',
-          prompt: 'The longitude must be a decimal number'
-        }, {
-          type: 'boundaries[-180:180]',
-          prompt: 'The latitude must be higher than -180 and less than 180'
-        }]
-      },
       location: {
         rules: [{
           type: 'geometry',
@@ -135,26 +114,6 @@
     event.preventDefault();
     form.form('validate form');
     geometry = false;
-  });
-
-  const locationButton = $('.ui.button#location');
-  if (!("geolocation" in navigator)) {
-    locationButton.toggleClass('disabled');
-  }
-  locationButton.click(function (event) {
-    event.preventDefault();
-    locationButton.toggleClass('loading');
-    navigator.geolocation.getCurrentPosition(function (position) {
-      form.form('set values', {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
-      });
-      geometry = true;
-      locationButton.toggleClass('loading');
-    }, function () {
-      locationButton.toggleClass('loading');
-      locationButton.toggleClass('disabled');
-    })
   });
 
   const geoCoding = function () {
