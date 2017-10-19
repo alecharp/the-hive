@@ -43,8 +43,8 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToGetTheHiveMembers() throws Exception {
         List<Bee> hive = Arrays.asList(
-            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014),
-            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072)
+            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014, "::1"),
+            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072, "::2")
         );
         given(this.beeService.all()).willReturn(hive);
 
@@ -61,12 +61,13 @@ public class BeeAPITest {
             .andExpect(jsonPath("$[*].name", Matchers.hasItems("Adrien L.", "Carlos R.")))
             .andExpect(jsonPath("$[*].latitude", Matchers.hasItems(48.864716, 37.392529)))
             .andExpect(jsonPath("$[*].longitude", Matchers.hasItems(2.349014, -5.994072)))
+            .andExpect(jsonPath("$[*].location", Matchers.hasItems("::1", "::2")))
             .andReturn();
     }
 
     @Test
     public void shouldBeAbleToRetrieveOneBee() throws Exception {
-        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242);
+        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242, "::1");
         given(this.beeService.byId(anyString())).willReturn(Optional.of(maya));
 
         this.mvc.perform(get("/api/bee/foobar"))
@@ -85,7 +86,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
-        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242);
+        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242, "::1");
         given(this.beeService.add(maya)).willReturn(maya);
 
         Field id = maya.getClass().getDeclaredField("id");

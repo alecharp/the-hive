@@ -1,7 +1,8 @@
 (function () {
+  const max_zoom = 7;
   const hive = L.map('content').setView([48.85, 2.35], 3);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 7,
+    maxZoom: max_zoom,
     minZoom: 3,
     attribution: '&copy;&nspar;<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     continuousWorld: true
@@ -12,7 +13,12 @@
       .bindPopup(`<b>${bee.name}</b>`)
       .addTo(hive);
   };
-  $.get('/api/hive', function(bees) {
+
+  const zoom2Bee = function (bee) {
+    hive.flyTo(L.latLng(bee.latitude, bee.longitude), max_zoom);
+  };
+
+  $.get('/api/hive', function (bees) {
     bees.forEach(addBeeToMap);
   });
 
@@ -23,11 +29,15 @@
     },
     onDeny: function () {
       $('.ui.form').form('reset');
+    },
+    onHide: function(elemnt) {
+      $('.ui.form').form('reset');
     }
   });
-  $('button#create-bee').click(function(event) {
+  $('button#create-bee').click(function (event) {
     event.preventDefault();
     modal.modal('show');
+    geoCoding();
   });
 
   /**
@@ -38,6 +48,15 @@
   $.fn.form.settings.rules.boundaries = function (value, boundaries) {
     const [minValue, maxValue] = boundaries.split(':');
     return Number(value) >= Number(minValue) && Number(value) <= Number(maxValue);
+  };
+
+  /**
+   * Verify that one of the options from the suggested locations on the dropdowm menu has been selecting input before submitting the form
+   *
+   */
+  let geometry;
+  $.fn.form.settings.rules.geometry = function () {
+    return geometry;
   };
 
   const form = $('.ui.form');
@@ -57,7 +76,7 @@
           form.form('reset');
           modal.modal('hide');
           addBeeToMap(bee);
-          hive.panTo([fields.latitude, fields.longitude]);
+          zoom2Bee(bee);
         })
         .fail(function () {
           form.form('set error');
@@ -82,53 +101,31 @@
           prompt: 'Specified email is not valid'
         }]
       },
-      latitude: {
+      location: {
         rules: [{
-          type: 'empty',
-          prompt: 'You must specify the latitude of your location'
-        }, {
-          type: 'number',
-          prompt: 'The latitude must be a decimal number'
-        }, {
-          type: 'boundaries[-90:90]',
-          prompt: 'The latitude must be higher than -90 and less than 90'
-        }]
-      },
-      longitude: {
-        rules: [{
-          type: 'empty',
-          prompt: 'You must specify the longitude of your location'
-        }, {
-          type: 'number',
-          prompt: 'The longitude must be a decimal number'
-        }, {
-          type: 'boundaries[-180:180]',
-          prompt: 'The latitude must be higher than -180 and less than 180'
+          type: 'geometry',
+          prompt: 'A place must be selected from the suggestions on the dropdown list'
         }]
       }
     }
   });
-  $('button#validate-form').click(function(event) {
+
+  $('button#validate-form').click(function (event) {
     event.preventDefault();
     form.form('validate form');
+    geometry = false;
   });
 
-  const locationButton = $('.ui.button#location');
-  if (!("geolocation" in navigator)) {
-    locationButton.toggleClass('disabled');
-  }
-  locationButton.click(function (event) {
-    event.preventDefault();
-    locationButton.toggleClass('loading');
-    navigator.geolocation.getCurrentPosition(function (position) {
+  const geoCoding = function () {
+    let autocomplete = new google.maps.places.Autocomplete(document.getElementById('location_input'), {regions: 'locality'});
+    autocomplete.addListener('place_changed', function () {
+      geometry = true;
+      const place = autocomplete.getPlace();
       form.form('set values', {
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng(),
       });
-      locationButton.toggleClass('loading');
-    }, function () {
-      locationButton.toggleClass('loading');
-      locationButton.toggleClass('disabled');
-    })
-  });
+    });
+  }
+
 })();

@@ -1,6 +1,7 @@
 package com.cloudbees.hive.model;
 
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,15 +26,18 @@ public class Bee {
     private double latitude;
     @Column(nullable = false)
     private double longitude;
+    @Column(nullable = false)
+    private String location;
 
     private Bee() {
     }
 
-    public Bee(String name, String email, double latitude, double longitude) {
+    public Bee(String name, String email, double latitude, double longitude, String location) {
         this.name = name;
         this.email = email;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.location = location;
     }
 
     public String getId() {
@@ -56,6 +60,9 @@ public class Bee {
         return longitude;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
     @Override
     public boolean equals(Object o) {
