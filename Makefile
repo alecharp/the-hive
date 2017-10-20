@@ -6,7 +6,7 @@ IMAGE_NAME=$(USER)/the-hive
 all: build
 
 build:
-	@[ -f target/the-hive.jar ] || mvn clean verify
+	@[ -f target/the-hive.jar ] || $$(npm i && npm run build && mvn verify)
 	@docker build --compress -t $(IMAGE_NAME) -f src/main/docker/Dockerfile .
 
 tag:

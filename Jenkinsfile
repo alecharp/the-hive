@@ -7,15 +7,27 @@ pipeline {
   agent none // TODO https://issues.jenkins-ci.org/browse/JENKINS-33510
 
   stages {
-    stage('Build') {
+    stage('Build React app') {
+      agent { docker 'alecharp/npm-build-tools' }
+      steps {
+        sh "npm i && npm build"
+      }
+      post {
+        success {
+          stash name: 'front', includes: 'target/generated-sources/front/*'
+        }
+      }
+    }
+    stage('Build String-Boot app') {
       agent { docker 'alecharp/maven-build-tools' } // TODO https://issues.jenkins-ci.org/browse/JENKINS-33510
       steps {
         script {
           def commitID = sh(returnStdout: true, script: 'git rev-parse --short --verify HEAD')?.trim()
           imageName = "alecharp/the-hive:${commitID}"
         }
+        unstash 'front'
         configFileProvider([configFile(fileId: 'cloudbees-maven-settings', targetLocation: 'settings.xml')]) {
-          sh 'mvn clean package -Dmaven.test.skip=true -s settings.xml'
+          sh 'mvn package -Dmaven.test.skip=true -s settings.xml'
         }
       }
       post {

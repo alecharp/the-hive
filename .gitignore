@@ -9,3 +9,6 @@ target
 
 ### Docker ###
 .docker-env
+
+### Node ###
+node_modules/
