@@ -9,11 +9,12 @@ const merge = require('webpack-merge');
 const common = {
   entry: {
     app: path.resolve(commonConfig.src, 'index.js'),
-    // vendors: []
+    vendors: ['leaflet', 'react', 'react-dom']
   },
   output: {
     path: path.resolve(commonConfig.output),
-    filename: '[name]-[chunkhash].js'
+    filename: '[name]-[chunkhash].js',
+    crossOriginLoading: 'anonymous',
   },
   plugins: [
     new ExtractTextPlugin({
@@ -33,7 +34,7 @@ const common = {
   },
   module: {
     rules: [{
-      test: /\.js$/,
+      test: /\.jsx?$/,
       exclude: /node_modules/,
       use: [{
         loader: 'babel-loader'
@@ -42,9 +43,28 @@ const common = {
       test: /\.less$/,
       exclude: /node_modules/,
       loader: ExtractTextPlugin.extract({
-        use: ['css-loader', 'less-loader'],
+        use: [
+          {loader: 'css-loader', options: {sourceMap: true}},
+          {loader: 'less-loader', options: {sourceMap: true}}
+        ],
         fallback: 'style-loader'
       })
+    }, {
+      test: /\.css$/,
+      // exclude: /node_modules/,
+      loader: ExtractTextPlugin.extract({
+        use: [
+          {loader: 'css-loader', options: {sourceMap: true}},
+        ],
+        fallback: 'style-loader'
+      })
+    }, {
+      test: /\.png$/,
+      // exclude: /node_modules/,
+      use: [{
+        loader: 'file-loader',
+        options: { name: 'images/[name].[ext]' }
+      }]
     }]
   }
 };
@@ -68,7 +88,7 @@ const development = {
     path: path.resolve(commonConfig.tmp),
     devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
   },
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-source-map',
   devServer: {
     inline: true,
     compress: true,
