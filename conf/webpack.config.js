@@ -51,7 +51,6 @@ const common = {
       })
     }, {
       test: /\.css$/,
-      // exclude: /node_modules/,
       loader: ExtractTextPlugin.extract({
         use: [
           {loader: 'css-loader', options: {sourceMap: true}},
@@ -60,7 +59,6 @@ const common = {
       })
     }, {
       test: /\.png$/,
-      // exclude: /node_modules/,
       use: [{
         loader: 'file-loader',
         options: { name: 'images/[name].[ext]' }
