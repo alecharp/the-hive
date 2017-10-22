@@ -22,6 +22,13 @@ mvn spring-boot:run
 
 or from your IDE, run the class `com.cloudbees.hive.Hive`
 
+=== React application
+
+....
+npm i
+npm start
+....
+
 === Docker container
 
 You can use the Docker image to run the application

@@ -13,9 +13,9 @@ L.Icon.Default.mergeOptions({
 
 import 'ui'
 
-import Hive from 'components/Hive'
+import App from 'components/App'
 
 ReactDOM.render(
-  <Hive />,
+  <App />,
   document.getElementById('content')
 )

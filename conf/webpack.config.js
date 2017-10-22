@@ -58,7 +58,7 @@ const common = {
         fallback: 'style-loader'
       })
     }, {
-      test: /\.png$/,
+      test: /\.(png|svg|ttf|eot|woff2?)$/,
       use: [{
         loader: 'file-loader',
         options: { name: 'images/[name].[ext]' }
