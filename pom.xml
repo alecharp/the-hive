@@ -20,7 +20,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<spring-boot.version>1.5.6.RELEASE</spring-boot.version>
+		<spring-boot.version>2.0.0.RC2</spring-boot.version>
 	</properties>
 
 	<organization>
@@ -54,6 +54,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- Database -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -136,6 +138,7 @@
 					<execution>
 						<goals>
 							<goal>repackage</goal>
+							<goal>build-info</goal>
 						</goals>
 						<configuration>
 							<classifier>exec</classifier>

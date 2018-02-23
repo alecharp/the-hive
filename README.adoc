@@ -61,7 +61,7 @@ docker run --name the-hive-database -d --rm \
   -e POSTGRES_USER=the-hive \
   -e POSTGRES_PASSWORD=my-local-database-password \
   -p 5432:5432 \
-  postgres:9.6
+  postgres:10.1
 ....
 
 Make sure to reflect the password (`POSTGRES_PASSWORD`) in `src/main/resources/application.yml#21`
@@ -71,6 +71,6 @@ You can then debug the database through:
 ....
 docker run --rm -ti \
   --link the-hive-database:postgres \
-  postgres:9.6 \
+  postgres:10.1 \
   psql -h postgres -U the-hive
 ....

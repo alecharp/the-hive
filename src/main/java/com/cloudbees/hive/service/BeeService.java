@@ -32,6 +32,6 @@ public class BeeService {
 
     @Transactional(readOnly = true)
     public Optional<Bee> byId(String id) {
-        return Optional.of(this.repository.findOne(id));
+        return this.repository.findById(id);
     }
 }
