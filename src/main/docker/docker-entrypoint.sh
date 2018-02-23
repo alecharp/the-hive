@@ -1,4 +1,5 @@
 #!/bin/sh
+set -euo pipefail
 
 JAVA_OPTS="-XX:+UseG1GC
  -XX:+UseStringDeduplication
