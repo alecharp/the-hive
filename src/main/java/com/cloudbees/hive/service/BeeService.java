@@ -34,4 +34,9 @@ public class BeeService {
     public Optional<Bee> byId(String id) {
         return this.repository.findById(id);
     }
+
+    @Transactional(readOnly = true)
+    public Optional<Bee> byEmail(String email) {
+        return this.repository.findByEmail(email);
+    }
 }

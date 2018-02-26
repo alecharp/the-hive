@@ -1,6 +1,7 @@
 package com.cloudbees.hive.service;
 
 import com.cloudbees.hive.model.Bee;
+import com.cloudbees.hive.model.Role;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class BeeServiceIT {
     @Test
     public void shouldBeAbleToSaveBeesInsideTheHive() {
         List<Bee> expectedHive = Arrays.asList(
-            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014, "::1"),
-            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072, "::1")
+            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014, "::1", Role.BEE),
+            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072, "::1", Role.BEE)
         );
         expectedHive.forEach(beeService::add);
         assertThat(this.beeService.all()).containsExactlyElementsOf(expectedHive);

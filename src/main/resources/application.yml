@@ -10,6 +10,15 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DATABASE_HOST:localhost}/${DATABASE_NAME:the-hive}
+  security:
+    oauth2.client:
+      registration:
+        google:
+          client-id:
+          client-secret: 
+          scope:
+           - email
+           - profile
 
 ---
 

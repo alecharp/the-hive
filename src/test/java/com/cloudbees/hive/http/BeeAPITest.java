@@ -1,6 +1,7 @@
 package com.cloudbees.hive.http;
 
 import com.cloudbees.hive.model.Bee;
+import com.cloudbees.hive.model.Role;
 import com.cloudbees.hive.service.BeeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -43,8 +44,8 @@ public class BeeAPITest {
     @Test
     public void shouldBeAbleToGetTheHiveMembers() throws Exception {
         List<Bee> hive = Arrays.asList(
-            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014, "::1"),
-            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072, "::2")
+            new Bee("Adrien L.", "a@l.fr", 48.864716, 2.349014, "::1", Role.BEE),
+            new Bee("Carlos R.", "a@h.fr", 37.392529, -5.994072, "::2", Role.BEE)
         );
         given(this.beeService.all()).willReturn(hive);
 
@@ -67,7 +68,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToRetrieveOneBee() throws Exception {
-        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242, "::1");
+        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242, "::1", Role.BEE);
         given(this.beeService.byId(anyString())).willReturn(Optional.of(maya));
 
         this.mvc.perform(get("/api/bee/foobar"))
@@ -86,7 +87,7 @@ public class BeeAPITest {
 
     @Test
     public void shouldBeAbleToCreateANewBee() throws Exception {
-        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242, "::1");
+        Bee maya = new Bee("John D.", "j@d.fr", 40.730610, -73.935242, "::1", Role.BEE);
         given(this.beeService.add(maya)).willReturn(maya);
 
         Field id = maya.getClass().getDeclaredField("id");
